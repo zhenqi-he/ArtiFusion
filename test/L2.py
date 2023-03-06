@@ -7,8 +7,8 @@ import numpy as np
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--pred_path', default="/root/autodl-tmp/histology/predicted/aa_cyclegan/test_latest/images")
-    parser.add_argument('--real_path', default="/root/autodl-tmp/histology/predicted/aa_cyclegan/test_latest/images")
+    parser.add_argument('--pred_path', default="")
+    parser.add_argument('--real_path', default="")
     args = parser.parse_args()
     
     pred_path = args.pred_path
