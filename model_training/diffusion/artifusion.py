@@ -92,7 +92,7 @@ class TimestepEmbedSequential(nn.Sequential, TimestepBlock):
     :param num_heads: the number of attention heads in each attention layer.
     """
     
-class SwinUNetModel(nn.Module):
+class ArtiFusionModel(nn.Module):
     def __init__(
         self,
         in_channels, # in_chans
