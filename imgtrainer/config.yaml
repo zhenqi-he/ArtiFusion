@@ -5,7 +5,7 @@ env:
   batch_size: 16
   # batch_size: 32
 output:
-  path: '/root/autodl-tmp/TTMI/output'
+  path: 'PATH_TO_OUTPUT'
 opt: 
   learning_rate: 1.0e-3
   min_learning_rate: 5.0e-5
@@ -15,11 +15,9 @@ opt:
   patience: 8
   scheduler: 'cosine' # epoential
 data:
-  # train_root: '/home/yiqing/data/mri_bone/img'
-  # test_root: '/home/yiqing/data/mri_bone/img'
-  # train_root: '/home/yiqing/data/crc/NCT-CRC-HE-100K'
-  train_root: '/root/autodl-tmp/TTMI/NCT-CRC-HE-100K'
-  test_root: '/root/autodl-tmp/TTMI/CRC-VAL-HE-7K'
+
+  train_root: '/PATH_TO_TRAINDATA'
+  test_root: 'PATH_TO_TESTDATA'
   num_classes: 9
 models:
   names:
