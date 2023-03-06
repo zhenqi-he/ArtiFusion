@@ -52,8 +52,8 @@ use_ddim: false
 latex_name: RePaint
 method_name: Repaint
 image_size: 256
-model_path: /root/autodl-tmp/models_diffusion_SwinConcat/ema_0.9999_1010000.pt
-name: ArtiFusion_concate
+model_path: PATH_TO_MODEL
+name: ArtiFusion
 inpa_inj_sched_prev: true
 n_jobs: 1
 print_estimated_vars: true
@@ -67,8 +67,8 @@ data:
   eval:
     paper_face_mask:
       mask_loader: true
-      gt_path: "/root/autodl-tmp/a_diffusion_dataset/100_trainA"
-      mask_path: "/root/autodl-tmp/a_diffusion_dataset/100_trainA_label"
+      gt_path: "PATH_TO_GT"
+      mask_path: "PATH_TO_MASK"
       image_size: 256
       class_cond: false
       deterministic: true
@@ -81,7 +81,7 @@ data:
       offset: 0
       max_len: 500
       paths:
-        srs: /root/autodl-tmp/a_diffusion_dataset/100_trainA_predicted_SwinConcat_time
-        lrs: /root/autodl-tmp/a_diffusion_dataset/notuse1
-        gts: /root/autodl-tmp/a_diffusion_dataset/notuse2
-        gt_keep_masks: /root/autodl-tmp/a_diffusion_dataset/notuse3
+        srs: 
+        lrs: 
+        gts: 
+        gt_keep_masks: 
