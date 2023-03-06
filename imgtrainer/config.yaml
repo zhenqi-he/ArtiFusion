@@ -1,0 +1,47 @@
+env:
+  seed: 97
+  gpu_id: 0
+  num_workers: 8
+  batch_size: 16
+  # batch_size: 32
+output:
+  path: '/root/autodl-tmp/TTMI/output'
+opt: 
+  learning_rate: 1.0e-3
+  min_learning_rate: 5.0e-5
+  weight_decay: 1.0e-5
+  gamma: 0.8
+  epochs: 50
+  patience: 8
+  scheduler: 'cosine' # epoential
+data:
+  # train_root: '/home/yiqing/data/mri_bone/img'
+  # test_root: '/home/yiqing/data/mri_bone/img'
+  # train_root: '/home/yiqing/data/crc/NCT-CRC-HE-100K'
+  train_root: '/root/autodl-tmp/TTMI/NCT-CRC-HE-100K'
+  test_root: '/root/autodl-tmp/TTMI/CRC-VAL-HE-7K'
+  num_classes: 9
+models:
+  names:
+    - "timm"
+    # - "timm2"
+    # - "mem_vit"
+    # - "fusion_mlp" # fusing two models to enhance the performance
+  timm:
+    # model_name: "res2next50"
+    model_name: 'densenet121'
+    pretrained: True
+    # pretrained: False
+    prenorm: True
+  mem_vit:
+    model_name: 'mem_vit'
+  # timm2:
+  #   model_name: 'resnet18'
+  #   pretrained: False
+  # fusion_mlp:
+  #   hidden_features:
+  #     - 128
+  #   adapt_in_features: "min"
+  #   activation: "leaky_relu"
+  #   dropout_prob: 0.1
+  #   normalization: "layer_norm"
