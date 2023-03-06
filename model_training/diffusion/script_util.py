@@ -4,7 +4,7 @@ import inspect
 from . import gaussian_diffusion as gd
 from .respace import SpacedDiffusion, space_timesteps
 from .unet import SuperResModel, UNetModel
-from .swinunet import SwinUNetModel
+from .artifusion import ArtiFusionModel
 NUM_CLASSES = 1000
 
 
@@ -109,7 +109,7 @@ def create_model(
     for res in attention_resolutions.split(","):
         attention_ds.append(image_size // int(res))
 
-    return SwinUNetModel(
+    return ArtiFusionModel(
         in_channels=3,
         model_channels=num_channels,
         out_channels=(3 if not learn_sigma else 6),
