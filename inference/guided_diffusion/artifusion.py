@@ -336,7 +336,7 @@ class BasicLayer_up(TimestepBlock):
             x = self.upsample(x,emb)
         return x
     
-class SwinUNetModel(nn.Module):
+class ArtiFusionModel(nn.Module):
     def __init__(
         self,
         in_channels, # in_chans
