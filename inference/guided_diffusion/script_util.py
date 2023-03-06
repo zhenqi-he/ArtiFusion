@@ -20,7 +20,7 @@ import inspect
 from . import gaussian_diffusion as gd
 from .respace import SpacedDiffusion, space_timesteps
 from .unet import UNetModel
-from .swinunet import SwinUNetModel
+from .artifusion import ArtiFusionModel
 NUM_CLASSES = 1000
 
 
