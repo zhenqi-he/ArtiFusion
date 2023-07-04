@@ -10,7 +10,11 @@ This is the first attempt at a denoising diffusion probabilistic model for histo
 
 The proposed ArtiFusion learns the capability of generating local tissue representation from contextual information during the training stage. We follow the training procedure in [guided-diffusion](https://github.com/openai/guided-diffusion)
 
-Run [train.sh](model_training/train.sh)
+Run [train.sh](model_training/train.sh) to train a DDPM model
+```bash
+sh train.sh
+```
+Run [sample.sh](model_training/sample.sh) for sampling from trained model
 ```bash
 sh train.sh
 ```
