@@ -18,3 +18,12 @@ Run [sample.sh](model_training/sample.sh) for sampling from trained model
 ```bash
 sh train.sh
 ```
+
+## Inference
+```bash
+python test.py --conf_path confs/XXXX.yml
+```
+
+
+## Acknowledgement
+We develop our code based on the implementation of [RePaint](https://github.com/andreas128/RePaint) and [guided-diffusion](https://github.com/openai/guided-diffusion). And thanks to [Yiqing Shen](https://github.com/yiqings) for the contribution of the codes for down-sample classification tasks.
