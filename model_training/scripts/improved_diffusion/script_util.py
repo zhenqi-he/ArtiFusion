@@ -5,6 +5,7 @@ from . import gaussian_diffusion as gd
 from .respace import SpacedDiffusion, space_timesteps
 from .unet import SuperResModel, UNetModel
 from .artifusion import ArtiFusionModel
+
 NUM_CLASSES = 1000
 
 
@@ -15,10 +16,10 @@ def model_and_diffusion_defaults():
     return dict(
         image_size=256,
         num_channels=128,
-        # num_res_blocks=2,
-        num_heads=4,
+        num_res_blocks=2,
+        num_heads=[3, 6, 12, 24],
         num_heads_upsample=-1,
-        # attention_resolutions="16,8",
+        attention_resolutions="16,8",
         dropout=0.0,
         learn_sigma=False,
         sigma_small=False,
@@ -105,11 +106,11 @@ def create_model(
     else:
         raise ValueError(f"unsupported image size: {image_size}")
 
-    attention_ds = []
-    for res in attention_resolutions.split(","):
-        attention_ds.append(image_size // int(res))
+    # attention_ds = []
+    # for res in attention_resolutions.split(","):
+    #     attention_ds.append(image_size // int(res))
 
-    return ArtiFusionModel(
+    return SwinUNetModel(
         in_channels=3,
         model_channels=num_channels,
         out_channels=(3 if not learn_sigma else 6),

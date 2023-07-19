@@ -179,6 +179,7 @@ class TrainLoop:
 
     def run_step(self, batch, cond):
         self.forward_backward(batch, cond)
+        # print("self.use_fp16",self.use_fp16)
         if self.use_fp16:
             self.optimize_fp16()
         else:
@@ -250,7 +251,13 @@ class TrainLoop:
 
     def _log_grad_norm(self):
         sqsum = 0.0
+        # print(self.master_params)
         for p in self.master_params:
+            
+            if p.grad is None:
+                print(p)
+                print(p.shape)
+                print(p.grad)
             sqsum += (p.grad ** 2).sum().item()
         logger.logkv_mean("grad_norm", np.sqrt(sqsum))
 

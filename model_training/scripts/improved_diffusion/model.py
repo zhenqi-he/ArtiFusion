@@ -124,18 +124,18 @@ class Mlp(nn.Module):
         return x
 
 
-def window_partition(x, window_size):
+def window_partition(x, window_size):    #将图片划分为windows
     """
     Args:
         x: (B, H, W, C)
         window_size (int): window size
     Returns:
-        windows: (num_windows*B, window_size, window_size, C)
+        windows: (B, num_windows, window_size, window_size, C)
     """
     B, H, W, C = x.shape
     x = x.view(B, H // window_size, window_size, W // window_size, window_size, C)
-    windows = x.permute(0, 1, 3, 2, 4, 5).contiguous().view(-1, window_size, window_size, C)
-    return windows
+    windows = x.permute(0, 1, 3, 2, 4, 5).contiguous().view(B,-1, window_size, window_size, C)
+    return windows.shape[1],windows
 
 
 def window_reverse(windows, window_size, H, W):
@@ -200,7 +200,6 @@ class WindowAttention(nn.Module):
 
         trunc_normal_(self.relative_position_bias_table, std=.02)
         self.softmax = nn.Softmax(dim=-1)
-    
 
     def forward(self, x, mask=None):
         """
@@ -218,12 +217,16 @@ class WindowAttention(nn.Module):
         relative_position_bias = self.relative_position_bias_table[self.relative_position_index.view(-1)].view(
             self.window_size[0] * self.window_size[1], self.window_size[0] * self.window_size[1], -1)  # Wh*Ww,Wh*Ww,nH
         relative_position_bias = relative_position_bias.permute(2, 0, 1).contiguous()  # nH, Wh*Ww, Wh*Ww
-        attn = attn + relative_position_bias.unsqueeze(0)
+        # 增加的时间维度不需要相对位置bias
+        L = self.window_size[0] * self.window_size[1]
+        attn[:,:, :L, :L] = attn[:,:, :L, :L] + relative_position_bias.unsqueeze(0)
+
 
         if mask is not None:
             nW = mask.shape[0]
-            attn = attn.view(B_ // nW, nW, self.num_heads, N, N) + mask.unsqueeze(1).unsqueeze(0)
-            attn = attn.view(-1, self.num_heads, N, N)
+            attn_withmask = attn[:,:, :L, :L]
+            attn_withmask = attn_withmask.view(B_ // nW, nW, self.num_heads, L, L) + mask.unsqueeze(1).unsqueeze(0)
+            attn[:,:, :L, :L] = attn_withmask.view(-1, self.num_heads, L, L)
             attn = self.softmax(attn)
         else:
             attn = self.softmax(attn)
@@ -233,7 +236,7 @@ class WindowAttention(nn.Module):
         x = (attn @ v).transpose(1, 2).reshape(B_, N, C)
         x = self.proj(x)
         x = self.proj_drop(x)
-        return x
+        return x[:,:L,:]
 
     def extra_repr(self) -> str:
         return f'dim={self.dim}, window_size={self.window_size}, num_heads={self.num_heads}'
@@ -547,7 +550,7 @@ class BasicLayer(TimestepBlock):
         else:
             self.downsample = None
 
-    def forward(self, x,emb):
+    def forward(self, x, emb):
         for blk in self.blocks:
             if self.use_checkpoint:
                 x = checkpoint.checkpoint(blk, x,emb)
@@ -557,16 +560,7 @@ class BasicLayer(TimestepBlock):
             x = self.downsample(x,emb)
         return x
 
-    def extra_repr(self) -> str:
-        return f"dim={self.dim}, input_resolution={self.input_resolution}, depth={self.depth}"
 
-    def flops(self):
-        flops = 0
-        for blk in self.blocks:
-            flops += blk.flops()
-        if self.downsample is not None:
-            flops += self.downsample.flops()
-        return flops
 
 class BasicLayer_up(TimestepBlock):
     """ A basic Swin Transformer layer for one stage.
@@ -655,6 +649,7 @@ class PatchEmbed(nn.Module):
             self.norm = None
 
     def forward(self, x):
+        # print("Patch Embd",x.shape)
         B, C, H, W = x.shape
         # FIXME look at relaxing size constraints
         assert H == self.img_size[0] and W == self.img_size[1], \
