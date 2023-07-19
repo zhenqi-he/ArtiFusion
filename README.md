@@ -16,7 +16,7 @@ sh train.sh
 ```
 Run [sample.sh](model_training/sample.sh) for sampling from trained model
 ```bash
-sh train.sh
+sh sample.sh
 ```
 
 ## Inference
