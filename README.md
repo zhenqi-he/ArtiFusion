@@ -1,6 +1,6 @@
 # Artifact Restoration in Histology Images with Diffusion Probabilistic Models
 
-This is the official implement of **Artifact Restoration in Histology Images with Diffusion Probabilistic Models** (MICCAI2023)
+This is the official implement of **Artifact Restoration in Histology Images with Diffusion Probabilistic Models** (MICCAI2023) [Arxiv](https://arxiv.org/abs/2307.14262)
 
 ## Introduction
 
