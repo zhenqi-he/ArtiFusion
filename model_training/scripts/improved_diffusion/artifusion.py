@@ -180,13 +180,23 @@ class SwinTransformerBlock(TimestepBlock):
         # print("emb shape ",emb.shape)
         # print(self.emb_layers)
         nW, x_windows = window_partition(shifted_x, self.window_size)
+       
+        
+        # print('in swinTransformer block, x_windows : ',x_windows.shape)
         x_windows = x_windows.view(B, -1, self.window_size * self.window_size,C)
         # print('in swinTransformer block, emb before: ',emb.shape)
-        time_embed=self.emb_layers(emb).unsqueeze(1)
+        # print('in swinTransformer block, x_windows : ',x_windows.shape)
+        time_embed=self.emb_layers(emb).unsqueeze(1).unsqueeze(1)
+        # print('in swinTransformer block, emb after: ',time_embed.shape)
+        # time_emb_shape = max(1,int(nW/B))
+        # print("time_emb_shape ",time_emb_shape)
+        # print((B,time_emb_shape,1,1))
+        # print(time_embed.repeat(B,time_emb_shape,1,1).shape)
         time_embed=time_embed.repeat(1,nW,1,1)
         # print('in swinTransformer block, emb after: ',time_embed.shape)
         x_windows = torch.concat((x_windows,time_embed),dim=-2)
         x_windows = x_windows.flatten(0,1)
+        # print('in swinTransformer block, x_windows after concate: ',x_windows.shape)
         # x_windows = x_windows.view(-1, self.window_size * self.window_size, C)  # nW*B, window_size*window_size, C
 
         # W-MSA/SW-MSA
