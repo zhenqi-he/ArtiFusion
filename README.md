@@ -31,3 +31,18 @@ python test.py --conf_path confs/XXXX.yml
 
 ## Acknowledgement
 We develop our code based on the implementation of [RePaint](https://github.com/andreas128/RePaint) and [guided-diffusion](https://github.com/openai/guided-diffusion). And thanks to [Yiqing Shen](https://github.com/yiqings) for the contribution of the codes for down-sample classification tasks.
+
+## Citation
+You may cite us as
+```
+@InProceedings{ArtiFusion,
+  author="He, Zhenqi
+  and He, Junjun
+  and Ye, Jin
+  and Shen, Yiqing",
+  title="Artifact Restoration in Histology Images with Diffusion Probabilistic Models",
+  booktitle="Medical Image Computing and Computer Assisted Intervention -- MICCAI",
+  year="2023",
+  pages="518--527"
+}
+```
